@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat App</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <input id="message" type="text">
+  <button onclick="sendMessage()">Send</button>
+
+  <script>
+    // Connect to the server
+    const socket = io.connect();
+
+    // Listen for 'speech' events
+    socket.on('speech', (message) => {
+      // Convert the message to speech
+      $.speech({
+        key: 'Your API Key',
+        src: message,
+        hl: 'en-us',
+        r: 0, 
+        c: 'mp3',
+        f: '44khz_16bit_stereo',
+        ssml: false
+      });
+    });
+
+    // Function to send a message
+    function sendMessage() {
+      const message = document.getElementById('message').value;
+      socket.emit('message', message);
+    }
+  </script>
+</body>
+</html>
